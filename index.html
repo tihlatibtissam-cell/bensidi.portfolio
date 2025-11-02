@@ -1,56 +1,553 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio - Albums</title>
-<style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Georgia','Times New Roman',serif; background:#4e342ece; color:#5d4037; min-height:100vh; }
-  header { text-align:center; padding:50px 20px 30px; font-size:2.5rem; font-weight:400; background:#4e342e; color:#b0abaa; font-family:'Georgia',serif; }
-  .album-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:25px; padding:30px 20px; max-width:1200px; margin:0 auto; }
-  .album-card { background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 4px 15px rgba(93,64,55,0.08); text-align:center; cursor:pointer; transition:all 0.3s ease; border:1px solid #f5f5f5; }
-  .album-card:hover { transform:translateY(-5px); box-shadow:0 8px 25px rgba(93,64,55,0.15); }
-  .album-card img { width:100%; height:180px; object-fit:cover; display:block; }
-  .album-card h3 { padding:15px 10px; font-size:1.1rem; color:#5d4037; }
-  @media(max-width:768px){ .album-card img{height:150px;} header{font-size:2rem;padding:40px 15px 25px;} }
-  @media(max-width:480px){ .album-card img{height:120px;} header{font-size:1.8rem;padding:30px 10px 20px;} }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bensidi Nada - Portfolio Photographique</title>
+    <meta name="description" content="Portfolio de Bensidi Nada - Découvrez mes reportages photos : Symphonie, Don du Sang, TEDx, Cérémonie de remise des diplômes et plus encore">
+    <meta name="keywords" content="Bensidi Nada, photographe, portfolio, reportage, événements, Symphonie, TEDx, don du sang">
+    <meta name="author" content="Bensidi Nada">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :focus {
+            outline: 3px solid #8b4513;
+            outline-offset: 2px;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: #4e342ece;
+            color: #5d4037;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: #654b39;
+            color: white;
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 10000;
+            transition: top 0.3s;
+            font-weight: 500;
+        }
+
+        .skip-link:focus {
+            top: 6px;
+        }
+
+        header {
+            text-align: center;
+            padding: 100px 20px 80px;
+            background: #4e342e;
+            border-bottom: 1px solid #d7ccc8;
+        }
+
+        header h1 {
+            font-size: 3.2rem;
+            margin-bottom: 15px;
+            font-weight: 400;
+            color: #d2d2d2;
+            letter-spacing: 1px;
+        }
+
+        header h2 {
+            font-size: 1.3rem;
+            font-weight: 300;
+            color: #6e554b;
+            letter-spacing: 0.5px;
+            font-style: italic;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-info {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #6e554b;
+        }
+
+        .contact-info a {
+            color: #b6a294;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-info a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        .social-links {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .instagram-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #b6a294;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border: 1px solid #6e554b;
+            border-radius: 20px;
+        }
+
+        .instagram-link:hover {
+            color: #ffffff;
+            background: #6e554b;
+            transform: translateY(-2px);
+        }
+
+        .albums-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #4e342e;
+            font-weight: 400;
+        }
+
+        .albums-list {
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+
+        .album-item {
+            display: block;
+            background: #fffcfb;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(93, 64, 55, 0.1);
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            border: 1px solid #d7ccc8;
+            position: relative;
+        }
+
+        .album-item:focus {
+            outline: 3px solid #8b4513;
+            outline-offset: 3px;
+        }
+
+        .album-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(93, 64, 55, 0.15);
+            border-color: #bcaaa4;
+        }
+
+        .album-content {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .album-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .album-item:hover .album-image {
+            transform: scale(1.02);
+        }
+
+        .album-info {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                       rgba(78, 52, 46, 0.9) 0%, 
+                       rgba(93, 64, 55, 0.85) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .album-item:hover .album-info,
+        .album-item:focus .album-info {
+            opacity: 1;
+        }
+
+        .album-info h3 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: #391e06;
+            font-weight: 400;
+            font-family: 'Georgia', serif;
+        }
+
+        .album-info span {
+            font-size: 1.2rem;
+            color: #825646;
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        .album-description {
+            margin-top: 10px;
+            font-size: 1rem;
+            color: #efebe9;
+            max-width: 80%;
+            line-height: 1.4;
+        }
+
+        /* Version mobile */
+        @media (hover: none) {
+            .album-info {
+                opacity: 1;
+                background: linear-gradient(to bottom, 
+                           rgba(78, 52, 46, 0.8) 0%, 
+                           rgba(93, 64, 55, 0.7) 100%);
+            }
+            
+            .album-info h3 {
+                font-size: 1.8rem;
+            }
+            
+            .album-info span {
+                font-size: 1rem;
+            }
+
+            .album-item:hover {
+                transform: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Responsive design */
+        @media (min-width: 768px) {
+            .album-content {
+                flex-direction: row;
+                height: 350px;
+            }
+            
+            .album-image {
+                width: 100%;
+                height: 100%;
+            }
+            
+            .album-info {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+            }
+
+            .album-info h3 {
+                font-size: 2.8rem;
+            }
+            
+            .album-info span {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .album-content {
+                height: 400px;
+            }
+            
+            .albums-list {
+                gap: 45px;
+            }
+            
+            .album-info h3 {
+                font-size: 3rem;
+            }
+        }
+
+        /* Animations */
+        .album-item {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .album-item:nth-child(1) { animation-delay: 0.1s; }
+        .album-item:nth-child(2) { animation-delay: 0.2s; }
+        .album-item:nth-child(3) { animation-delay: 0.3s; }
+        .album-item:nth-child(4) { animation-delay: 0.4s; }
+        .album-item:nth-child(5) { animation-delay: 0.5s; }
+
+        /* Footer */
+        footer {
+            background: #4e342e;
+            color: #efebe9;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #d7ccc8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #ffffff;
+        }
+
+        .copyright {
+            margin-top: 20px;
+            color: #bcaaa4;
+            font-size: 0.9rem;
+        }
+
+        /* Accessibilité */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Détails esthétiques */
+        .album-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 0%, rgba(188, 170, 164, 0.03) 100%);
+            pointer-events: none;
+            z-index: 1;
+            border-radius: 12px;
+        }
+
+        /* Effet de texture papier */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%235d4037' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
 </head>
 <body>
 
-<header>Mes Albums</header>
-<div class="album-grid" id="albumGrid"></div>
+<!-- Lien d'évitement pour l'accessibilité -->
+<a href="#main-content" class="skip-link">Aller au contenu principal</a>
+
+<header>
+    <h1>BENSIDI NADA</h1>
+    <h2>Take a look at my creations below</h2>
+    <div class="contact-info">
+        <p>Contact: <a href="mailto:nadabensidi123@gmail.com">nadabensidi123@gmail.com</a></p>
+        <div class="social-links">
+            <a href="https://www.instagram.com/chwiya_mn_kolchi?igsh=NGk1dWt2OHlhZHlm" class="instagram-link" target="_blank" rel="noopener noreferrer">
+                Voir plus sur mon Instagram
+            </a>
+        </div>
+    </div>
+</header>
+
+<main id="main-content" tabindex="-1">
+    <div class="albums-container">
+        <h2 class="section-title" id="albums-title">Mes Captures</h2>
+        
+        <div class="albums-list" role="list" aria-labelledby="albums-title">
+
+            <a href="album.html?album=album1" class="album-item" role="listitem" aria-label="Voir l'album Symphonie - Reportage musical 2023">
+                <div class="album-content">
+                    <img src="albums/album1/cover.jpg" alt="Reportage Symphonie - Captures d'un concert classique avec orchestre en pleine performance" class="album-image">
+                    <div class="album-info">
+                        <h3>Symphonie</h3>
+                        <span>2023</span>
+                        <p class="album-description">Une action humanitaire visant à réaménager une école et à offrir des moments de joie et de partage aux enfants.</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="album.html?album=album2" class="album-item" role="listitem" aria-label="Voir l'album Don du Sang - Événement caritatif 2023">
+                <div class="album-content">
+                    <img src="albums/album2/cover.jpg" alt="Événement Don du Sang - Moments de solidarité lors d'une collecte de sang bénévole" class="album-image">
+                    <div class="album-info">
+                        <h3>Don du Sang</h3>
+                        <span>2023</span>
+                        <p class="album-description">Une campagne de don du sang organisée à l'ENSA de Tanger, afin d'encourager la solidarité et de venir en aide aux personnes ayant un besoin vital de transfusion.</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="album.html?album=album3" class="album-item" role="listitem" aria-label="Voir l'album TEDx - Conférence inspirante 2024">
+                <div class="album-content">
+                    <img src="albums/album3/cover.jpg" alt="Conférence TEDx - Orateurs passionnés partageant leurs idées innovantes" class="album-image">
+                    <div class="album-info">
+                        <h3>TEDx</h3>
+                        <span>2024</span>
+                        <p class="album-description">Couverture photographique d'une conférence TEDx avec des intervenants inspirants</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="album.html?album=album4" class="album-item" role="listitem" aria-label="Voir l'album Cérémonie de remise des diplômes - Événement académique 2023">
+                <div class="album-content">
+                    <img src="albums/album4/cover.jpg" alt="Cérémonie de remise des diplômes - Diplômés célébrant leur réussite académique" class="album-image">
+                    <div class="album-info">
+                        <h3>Cérémonie de remise des diplômes</h3>
+                        <span>2023</span>
+                        <p class="album-description">Reportage sur une cérémonie de graduation capturant la fierté des diplômés</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="album.html?album=album5" class="album-item" role="listitem" aria-label="Voir l'album Projets Personnels - Créations diverses 2024">
+                <div class="album-content">
+                    <img src="albums/album5/cover.jpg" alt="Projets personnels - Collection de travaux photographiques variés" class="album-image">
+                    <div class="album-info">
+                        <h3>My Lens</h3>
+                        <p class="album-description">Sélection de mes créations personnelles et expérimentations photographiques</p>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </div>
+</main>
+
+<footer role="contentinfo">
+    <div class="footer-content">
+        <div class="footer-links">
+            <a href="#main-content">Retour en haut</a>
+            <a href="mailto:nadabensidi123@gmail.com">Contact</a>
+            <a href="https://www.instagram.com/chwiya_mn_kolchi?igsh=NGk1dWt2OHlhZHlm" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </div>
+        <div class="copyright">
+            <p>Site créé avec passion pour partager ma vision photographique.</p>
+        </div>
+    </div>
+</footer>
 
 <script>
-  // Liste des albums et miniature
-  const albums = [
-    { key:'album1', title:'Symphonie', thumb:'albums/album1/photo1.jpg' },
-    { key:'album2', title:'Don du Sang', thumb:'albums/album2/photo1.jpg' },
-    { key:'album3', title:'TEDx', thumb:'albums/album3/photo1.jpg' },
-    { key:'album4', title:'Cérémonie de remise des diplômes', thumb:'albums/album4/photo1.jpg' },
-    { key:'album5', title:'My Lens', thumb:'albums/album5/photo1.jpg' }
-  ];
+    document.addEventListener('DOMContentLoaded', function() {
+        const albumItems = document.querySelectorAll('.album-item');
+        
+        // Gestion tactile améliorée
+        albumItems.forEach(item => {
+            let touchTimer;
+            
+            item.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                const info = this.querySelector('.album-info');
+                info.style.opacity = '1';
+                
+                touchTimer = setTimeout(() => {
+                    info.style.opacity = '0';
+                }, 3000);
+            });
+            
+            item.addEventListener('touchend', function() {
+                clearTimeout(touchTimer);
+            });
+            
+            item.addEventListener('touchmove', function() {
+                const info = this.querySelector('.album-info');
+                info.style.opacity = '0';
+                clearTimeout(touchTimer);
+            });
+        });
 
-  const albumGrid = document.getElementById('albumGrid');
+        // Gestion des erreurs d'images
+        const images = document.querySelectorAll('img');
+        images.forEach(img => {
+            img.addEventListener('error', function() {
+                this.alt = 'Image non chargée - ' + this.alt;
+                this.style.backgroundColor = '#f5f5f5';
+            });
+        });
 
-  albums.forEach(album=>{
-    const card = document.createElement('div');
-    card.className = 'album-card';
-    card.onclick = ()=>window.location.href = `album.html?album=${album.key}`;
+        // Navigation au clavier améliorée
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.activeElement.blur();
+            }
+        });
 
-    const img = document.createElement('img');
-    img.src = album.thumb;
-    img.alt = album.title;
-    img.onerror = () => img.src=''; // supprime si image manquante
-
-    const title = document.createElement('h3');
-    title.textContent = album.title;
-
-    card.appendChild(img);
-    card.appendChild(title);
-    albumGrid.appendChild(card);
-  });
+        // Respect des préférences de réduction d'animation
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            const styles = document.createElement('style');
+            styles.textContent = `
+                * {
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
+                }
+            `;
+            document.head.appendChild(styles);
+        }
+    });
 </script>
 
 </body>
