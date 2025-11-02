@@ -1,331 +1,88 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Album</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Album</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Georgia','Times New Roman',serif; background:#4e342ece; color:#5d4037; line-height:1.6; min-height:100vh; }
+  .back { position:fixed; top:20px; left:20px; background:rgba(255,255,255,0.9); color:#5d4037; border:1px solid #d7ccc8; padding:12px 20px; border-radius:25px; cursor:pointer; font-size:1rem; backdrop-filter:blur(10px); z-index:1000; transition:all 0.3s ease; font-family:'Georgia',serif; }
+  .back:hover { background:#4e342e; color:#fff; box-shadow:0 4px 15px rgba(93,64,55,0.1); transform:translateY(-2px); }
+  #album-title { text-align:center; padding:40px 20px 30px; font-size:2.5rem; font-weight:400; background:#4e342e; color:#b0abaa; font-family:'Georgia',serif; }
+  .media-container { display:flex; flex-direction:column; width:100%; align-items:center; padding:0 20px 40px; }
+  .media-item { width:100%; max-width:1200px; display:flex; justify-content:center; align-items:center; padding:25px 0; margin-bottom:10px; background:#fff; border-radius:12px; box-shadow:0 4px 15px rgba(93,64,55,0.08); border:1px solid #f5f5f5; animation:fadeInUp 0.6s ease forwards; opacity:0; }
+  .media-item img, .media-item video { max-width:100%; max-height:80vh; width:auto; height:auto; display:block; border-radius:8px; }
+  body::before { content:''; position:fixed; top:0; left:0; right:0; bottom:0; background-image: url("data:image/svg+xml,..."); pointer-events:none; z-index:-1; }
 
-        body {
-            font-family: 'Georgia', 'Times New Roman', serif;
-            background: #4e342ece;
-            color: #5d4037;
-            line-height: 1.6;
-            min-height: 100vh;
-        }
+  @keyframes fadeInUp { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
 
-        .back {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #5d4037;
-            border: 1px solid #d7ccc8;
-            padding: 12px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1rem;
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            transition: all 0.3s ease;
-            font-family: 'Georgia', serif;
-        }
-
-        .back:hover {
-            background: #4e342e;
-            box-shadow: 0 4px 15px rgba(93, 64, 55, 0.1);
-            transform: translateY(-2px);
-        }
-
-        #album-title {
-            text-align: center;
-            padding: 40px 20px 30px;
-            font-size: 2.5rem;
-            font-weight: 400;
-            background: #4e342e;
-            color: #b0abaa;
-            font-family: 'Georgia', serif;
-        }
-
-        .media-container {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            align-items: center;
-            padding: 0 20px 40px;
-        }
-
-        .media-item {
-            width: 100%;
-            max-width: 1200px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 25px 0;
-            margin-bottom: 10px;
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(93, 64, 55, 0.08);
-            border: 1px solid #f5f5f5;
-        }
-
-        .media-item img {
-            max-width: 100%;
-            max-height: 80vh;
-            width: auto;
-            height: auto;
-            display: block;
-            border-radius: 8px;
-        }
-
-        .media-item video {
-            max-width: 100%;
-            max-height: 80vh;
-            width: auto;
-            height: auto;
-            display: block;
-            border-radius: 8px;
-            background: #000;
-        }
-
-        /* Style pour les contrôles vidéo adaptés au thème */
-        .media-item video::-webkit-media-controls-panel {
-            background: rgba(78, 52, 46, 0.9);
-        }
-
-        .media-item video::-webkit-media-controls-play-button,
-        .media-item video::-webkit-media-controls-volume-slider,
-        .media-item video::-webkit-media-controls-mute-button {
-            filter: none;
-            color: #efebe9;
-        }
-
-        .media-item video::-webkit-media-controls-current-time-display,
-        .media-item video::-webkit-media-controls-time-remaining-display {
-            color: #efebe9;
-        }
-
-        /* Effet de texture papier */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%235d4037' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        /* Animation d'apparition des médias */
-        .media-item {
-            animation: fadeInUp 0.6s ease forwards;
-            opacity: 0;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            #album-title {
-                font-size: 2rem;
-                padding: 30px 15px 20px;
-            }
-            
-            .back {
-                padding: 10px 15px;
-                font-size: 0.9rem;
-            }
-            
-            .media-item {
-                padding: 20px 0;
-                margin-bottom: 8px;
-            }
-            
-            .media-item img,
-            .media-item video {
-                max-height: 75vh;
-            }
-
-            .media-container {
-                padding: 0 15px 30px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            #album-title {
-                font-size: 1.8rem;
-                padding: 25px 10px 15px;
-            }
-            
-            .media-item {
-                padding: 15px 0;
-                margin-bottom: 5px;
-            }
-            
-            .media-item img,
-            .media-item video {
-                max-height: 70vh;
-            }
-
-            .media-container {
-                padding: 0 10px 20px;
-            }
-        }
-
-        /* Style pour les images en portrait */
-        .media-item.portrait img {
-            max-height: 85vh;
-        }
-
-        /* Effet de survol subtil */
-        .media-item:hover {
-            box-shadow: 0 6px 20px rgba(93, 64, 55, 0.12);
-            transform: translateY(-2px);
-            transition: all 0.3s ease;
-        }
-    </style>
+  @media(max-width:768px){ #album-title{font-size:2rem;padding:30px 15px 20px;} .back{padding:10px 15px;font-size:0.9rem;} .media-item{padding:20px 0;margin-bottom:8px;} .media-item img,.media-item video{max-height:75vh;} .media-container{padding:0 15px 30px;} }
+  @media(max-width:480px){ #album-title{font-size:1.8rem;padding:25px 10px 15px;} .media-item{padding:15px 0;margin-bottom:5px;} .media-item img,.media-item video{max-height:70vh;} .media-container{padding:0 10px 20px;} }
+  .media-item.portrait img{max-height:85vh;}
+</style>
 </head>
 <body>
 
 <button class="back" onclick="window.location.href='index.html'">← Retour</button>
-
 <h2 id="album-title"></h2>
-
 <div class="media-container" id="mediaGrid"></div>
 
 <script>
-    // Mapping des noms d'albums
-    const albumNames = {
-        'album1': 'Symphonie',
-        'album2': 'Don du Sang', 
-        'album3': 'TEDx',
-        'album4': 'Ccérémonie de remise des diplomes',
-        'album5': 'My Lens',
-    };
+  // Définition des noms d'album
+  const albumNames = {
+    'album1':'Symphonie',
+    'album2':'Don du Sang',
+    'album3':'TEDx',
+    'album4':'Cérémonie de remise des diplômes',
+    'album5':'My Lens'
+  };
 
-    // Récupérer le nom de l'album depuis l'URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const albumKey = urlParams.get('album');
+  // Récupération du paramètre album dans l'URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const albumKey = urlParams.get('album');
+  const mediaGrid = document.getElementById('mediaGrid');
+  const albumTitle = document.getElementById('album-title');
 
-    // Obtenir le nom d'affichage de l'album
-    const albumDisplayName = albumNames[albumKey] || (albumKey ? albumKey.replace('album', 'Album ') : 'Album');
+  if(!albumKey){
+    albumTitle.textContent = "Album non trouvé";
+    mediaGrid.innerHTML = "<p style='text-align:center; padding:50px;'>Aucun album sélectionné.</p>";
+  } else {
+    albumTitle.textContent = albumNames[albumKey] || albumKey;
 
-    // Mettre à jour le titre de l'album
-    document.getElementById('album-title').textContent = albumDisplayName;
-
-    // Fonction pour charger les médias de l'album
-    function loadAlbumMedia() {
-        const mediaGrid = document.getElementById('mediaGrid');
-        
-        if (!albumKey) {
-            mediaGrid.innerHTML = '<p style="text-align: center; padding: 50px; color: #5d4037;">Album non trouvé</p>';
-            return;
+    // Charger les images
+    const maxPhotos = 30; // nombre max de photos par album
+    for(let i=1; i<=maxPhotos; i++){
+      const img = document.createElement('img');
+      img.src = `albums/${albumKey}/photo${i}.jpg`;
+      img.alt = `Photo ${i} de ${albumTitle.textContent}`;
+      img.loading = 'lazy';
+      img.onerror = () => img.remove(); // supprime les images inexistantes
+      img.onload = function(){
+        if(this.naturalHeight > this.naturalWidth){
+          this.parentElement?.classList.add('portrait');
         }
-
-        // Liste des médias (images et vidéos)
-        const mediaFiles = [
-            { type: 'image', src: `albums/${albumKey}/photo1.jpg` },
-            { type: 'video', src: `albums/${albumKey}/video1.mov` },
-            { type: 'image', src: `albums/${albumKey}/photo2.jpg` },
-            { type: 'video', src: `albums/${albumKey}/video2.mov` },
-            { type: 'image', src: `albums/${albumKey}/photo3.jpg` },
-            { type: 'image', src: `albums/${albumKey}/photo4.jpg` },
-            { type: 'image', src: `albums/${albumKey}/photo5.jpg` },
-            { type: 'image', src: `albums/${albumKey}/photo6.jpg` },
-            { type: 'image', src: `albums/${albumKey}/photo7.jpg` },
-            { type: 'image', src: `albums/${albumKey}/photo8.jpg` },
-            { type: 'image', src: `albums/${albumKey}/photo9.jpg` },
-            { type: 'image', src: `albums/${albumKey}/photo10.jpg` },
-            { type: 'image', src: `albums/${albumKey}/photo11.jpg` },
-            { type: 'image', src: `albums/${albumKey}/photo12.jpg` },
-            { type: 'image', src: `albums/${albumKey}/photo13.jpg` },
-             { type: 'image', src: `albums/${albumKey}/photo14.jpg` },
-            { type: 'image', src: `albums/${albumKey}/photo15.jpg` },
-            { type: 'image', src: `albums/${albumKey}/photo16.jpg` },
-            { type: 'image', src: `albums/${albumKey}/photo17.jpg` },
-            { type: 'image', src: `albums/${albumKey}/photo18.jpg` },
-            { type: 'image', src: `albums/${albumKey}/photo19.jpg`},
-            { type: 'image', src: `albums/${albumKey}/photo20.jpg` },
-            { type: 'image', src: `albums/${albumKey}/photo21.jpg` },
-            { type: 'image', src: `albums/${albumKey}/photo22.jpg` }
-
-        ];
-
-        // Créer les éléments média
-        mediaFiles.forEach((media, index) => {
-            const mediaItem = document.createElement('div');
-            mediaItem.className = 'media-item';
-            mediaItem.style.animationDelay = `${index * 0.1}s`;
-            
-            if (media.type === 'image') {
-                const img = document.createElement('img');
-                img.src = media.src;
-                img.alt = `Photo de ${albumDisplayName}`;
-                img.loading = "lazy";
-                
-                img.onerror = function() {
-                    mediaItem.style.display = 'none';
-                };
-
-                img.onload = function() {
-                    // Ajouter une classe pour les images portrait
-                    if (this.naturalHeight > this.naturalWidth) {
-                        mediaItem.classList.add('portrait');
-                    }
-                };
-                
-                mediaItem.appendChild(img);
-                
-            } else if (media.type === 'video') {
-                const video = document.createElement('video');
-                video.src = media.src;
-                video.controls = true;
-                video.playsInline = true;
-                video.preload = "metadata";
-                video.alt = `Vidéo de ${albumDisplayName}`;
-                
-                video.onerror = function() {
-                    mediaItem.style.display = 'none';
-                };
-                
-                mediaItem.appendChild(video);
-            }
-            
-            mediaGrid.appendChild(mediaItem);
-        });
+      };
+      const container = document.createElement('div');
+      container.className = 'media-item';
+      container.appendChild(img);
+      mediaGrid.appendChild(container);
     }
 
-    // Charger les médias au démarrage
-    loadAlbumMedia();
-
-    // Gestion du défilement fluide
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-            e.preventDefault();
-            const scrollAmount = window.innerHeight * 0.8;
-            window.scrollBy({
-                top: e.key === 'ArrowDown' ? scrollAmount : -scrollAmount,
-                behavior: 'smooth'
-            });
-        }
-    });
+    // Charger les vidéos (facultatif)
+    for(let i=1;i<=5;i++){
+      const video = document.createElement('video');
+      video.src = `albums/${albumKey}/video${i}.mov`;
+      video.controls = true;
+      video.playsInline = true;
+      video.preload = "metadata";
+      video.onerror = () => video.remove();
+      const container = document.createElement('div');
+      container.className = 'media-item';
+      container.appendChild(video);
+      mediaGrid.appendChild(container);
+    }
+  }
 </script>
-
 </body>
 </html>
