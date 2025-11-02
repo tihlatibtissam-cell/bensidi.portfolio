@@ -7,7 +7,7 @@ if (albumName) {
     "Album "
   );
 
-  const container = document.getElementById("mediaGrid");
+  const container = document.getElementById("photoGrid");
 
   for (let i = 1; i <= 30; i++) {
     let img = document.createElement("img");
