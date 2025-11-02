@@ -21,7 +21,7 @@ if (albumKey) {
     for (let i = 1; i <= 30; i++) {
         // Essayer l'image .jpg
         const imgPath = `https://bensidi-portfolio.vercel.app/albums/${albumKey}/photo${i}.jpg`;
-        const videoPath = `https://bensidi-portfolio.vercel.app/albums/${albumKey}/video${i}.mp4`;
+        const videoPath = `https://bensidi-portfolio.vercel.app/albums/${albumKey}/video${i}.mov`;
 
         // Créer un div pour chaque média
         const mediaItem = document.createElement("div");
