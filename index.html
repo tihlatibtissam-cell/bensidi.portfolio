@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Bensidi Nada - Portfolio Photographique</title>
     <meta name="description" content="Portfolio de Bensidi Nada - Découvrez mes reportages photos : Symphonie, Don du Sang, TEDx, Cérémonie de remise des diplômes et plus encore">
     <meta name="keywords" content="Bensidi Nada, photographe, portfolio, reportage, événements, Symphonie, TEDx, don du sang">
@@ -161,6 +161,7 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            height: 300px; 
         }
 
         .album-image {
@@ -240,6 +241,8 @@
             }
 
             .album-item:hover {
+               pointer-events: all;
+
                 transform: none;
             }
         }
@@ -297,6 +300,7 @@
         .album-item {
             animation: fadeInUp 0.6s ease forwards;
             opacity: 0;
+            min-height: 120px;
         }
 
         @keyframes fadeInUp {
@@ -492,62 +496,76 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const albumItems = document.querySelectorAll('.album-item');
+    const albumItems = document.querySelectorAll('.album-item');
+    
+    // Gestion améliorée pour mobile
+    albumItems.forEach(item => {
+        // Éviter les doubles clics accidentels
+        let lastTouchTime = 0;
         
-        // Gestion tactile améliorée
-        albumItems.forEach(item => {
-            let touchTimer;
+        item.addEventListener('touchstart', function(e) {
+            const currentTime = new Date().getTime();
+            const timeSinceLastTouch = currentTime - lastTouchTime;
             
-            item.addEventListener('touchstart', function(e) {
+            if (timeSinceLastTouch < 500) {
                 e.preventDefault();
-                const info = this.querySelector('.album-info');
-                info.style.opacity = '1';
-                
-                touchTimer = setTimeout(() => {
-                    info.style.opacity = '0';
-                }, 3000);
-            });
+                return;
+            }
+            lastTouchTime = currentTime;
             
-            item.addEventListener('touchend', function() {
-                clearTimeout(touchTimer);
-            });
-            
-            item.addEventListener('touchmove', function() {
-                const info = this.querySelector('.album-info');
-                info.style.opacity = '0';
-                clearTimeout(touchTimer);
-            });
+            // Feedback visuel
+            this.style.transform = 'scale(0.98)';
         });
-
-        // Gestion des erreurs d'images
-        const images = document.querySelectorAll('img');
-        images.forEach(img => {
-            img.addEventListener('error', function() {
-                this.alt = 'Image non chargée - ' + this.alt;
-                this.style.backgroundColor = '#f5f5f5';
-            });
+        
+        item.addEventListener('touchend', function() {
+            this.style.transform = '';
         });
-
-        // Navigation au clavier améliorée
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                document.activeElement.blur();
+        
+        item.addEventListener('touchmove', function() {
+            this.style.transform = '';
+        });
+        
+        // Gestion du click normal (fallback)
+        item.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                // Petit délai pour s'assurer que le touch n'est pas en cours
+                setTimeout(() => {
+                    window.location.href = this.href;
+                }, 100);
             }
         });
+    });
 
-        // Respect des préférences de réduction d'animation
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            const styles = document.createElement('style');
-            styles.textContent = `
-                * {
-                    animation-duration: 0.01ms !important;
-                    animation-iteration-count: 1 !important;
-                    transition-duration: 0.01ms !important;
-                }
-            `;
-            document.head.appendChild(styles);
+    // Gestion des erreurs d'images
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+        img.addEventListener('error', function() {
+            this.alt = 'Image non chargée - ' + this.alt;
+            this.style.backgroundColor = '#f5f5f5';
+            this.style.display = 'none';
+        });
+    });
+
+    // Navigation au clavier améliorée
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.activeElement.blur();
         }
     });
+
+    // Respect des préférences de réduction d'animation
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const styles = document.createElement('style');
+        styles.textContent = `
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        `;
+        document.head.appendChild(styles);
+    }
+});
 </script>
 
 </body>
