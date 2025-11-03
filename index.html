@@ -495,76 +495,60 @@
 </footer>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+   document.addEventListener('DOMContentLoaded', function() {
     const albumItems = document.querySelectorAll('.album-item');
     
-    // Gestion améliorée pour mobile
-    albumItems.forEach(item => {
-        // Éviter les doubles clics accidentels
-        let lastTouchTime = 0;
+    // Solution radicale pour mobile
+    function isMobileDevice() {
+        return (('ontouchstart' in window) ||
+            (navigator.maxTouchPoints > 0) ||
+            (navigator.msMaxTouchPoints > 0));
+    }
+    
+    if (isMobileDevice()) {
+        console.log('Appareil mobile détecté - activation du mode spécial');
         
-        item.addEventListener('touchstart', function(e) {
-            const currentTime = new Date().getTime();
-            const timeSinceLastTouch = currentTime - lastTouchTime;
+        albumItems.forEach(item => {
+            // Créer un overlay invisible pour capturer tous les touches
+            const overlay = document.createElement('div');
+            overlay.style.position = 'absolute';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.zIndex = '1000';
+            overlay.style.cursor = 'pointer';
             
-            if (timeSinceLastTouch < 500) {
+            item.style.position = 'relative';
+            item.appendChild(overlay);
+            
+            // Gestion explicite du click
+            const link = item.getAttribute('href');
+            
+            overlay.addEventListener('click', function(e) {
                 e.preventDefault();
-                return;
-            }
-            lastTouchTime = currentTime;
+                e.stopPropagation();
+                console.log('Navigation vers:', link);
+                window.location.href = link;
+            });
             
-            // Feedback visuel
-            this.style.transform = 'scale(0.98)';
+            overlay.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Navigation tactile vers:', link);
+                window.location.href = link;
+            });
         });
-        
-        item.addEventListener('touchend', function() {
-            this.style.transform = '';
-        });
-        
-        item.addEventListener('touchmove', function() {
-            this.style.transform = '';
-        });
-        
-        // Gestion du click normal (fallback)
-        item.addEventListener('click', function(e) {
-            if (window.innerWidth <= 768) {
-                // Petit délai pour s'assurer que le touch n'est pas en cours
-                setTimeout(() => {
-                    window.location.href = this.href;
-                }, 100);
-            }
-        });
-    });
-
+    }
+    
     // Gestion des erreurs d'images
     const images = document.querySelectorAll('img');
     images.forEach(img => {
         img.addEventListener('error', function() {
-            this.alt = 'Image non chargée - ' + this.alt;
-            this.style.backgroundColor = '#f5f5f5';
+            console.log('Image non chargée:', this.src);
             this.style.display = 'none';
         });
     });
-
-    // Navigation au clavier améliorée
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            document.activeElement.blur();
-        }
-    });
-
-    // Respect des préférences de réduction d'animation
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        const styles = document.createElement('style');
-        styles.textContent = `
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        `;
-        document.head.appendChild(styles);
-    }
 });
 </script>
 
